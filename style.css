@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap'); /* Body and heading fonts */
+
+/* Default palette, overridden per mood below */
+:root { --bg: #17253e; --bg2: #435d7d; --accent: #d7e5fa; --text: #fff9f1; --muted: #d0d9e5; --panel: rgba(255,255,255,.10); --border: rgba(255,255,255,.22); }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-height: 100vh; background: linear-gradient(135deg, var(--bg), var(--bg2)); color: var(--text); font-family: 'DM Sans', sans-serif; transition: background 1.1s, color 1s; overflow-x: hidden; }
+
+/* Mood palettes, set by script.js through body[data-mood] */
+body[data-mood="sunny"] { --bg: #e0662f; --bg2: #f7b267; --accent: #ffe1a3; --muted: #fff0df; }
+body[data-mood="rainy"] { --bg: #142c42; --bg2: #43667b; --accent: #9bd8f5; }
+body[data-mood="snowy"] { --bg: #547c99; --bg2: #b2d5e2; --accent: #f0fcff; }
+body[data-mood="stormy"] { --bg: #191c37; --bg2: #535374; --accent: #c3b8f5; }
+body[data-mood="clear-night"] { --bg: #10182e; --bg2: #28365c; --accent: #d5d6ff; }
+body[data-mood="cloudy"] { --bg: #26364a; --bg2: #738399; --accent: #e0e9f3; }
+
+button { font: inherit; cursor: pointer; }
+a { color: inherit; }
+
+/* Animated background: glowing orb, drifting clouds, falling particles */
+.ambient { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+.orb { position: absolute; width: 430px; height: 430px; right: 8%; top: 8%; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--accent), transparent 72%); opacity: .38; filter: blur(5px); animation: breathe 9s ease-in-out infinite; }
+.cloud { position: absolute; width: 450px; height: 110px; background: rgba(255,255,255,.07); border-radius: 50%; filter: blur(35px); animation: drift 22s linear infinite; }
+.cloud-one { top: 30%; left: -25%; }
+.cloud-two { top: 65%; left: -50%; animation-duration: 35s; }
+.drop, .flake { position: absolute; top: -10%; animation: fall linear infinite; }
+.drop { width: 2px; height: 24px; background: rgba(199,228,255,.42); transform: rotate(12deg); }
+.flake { color: #f4faff; font-size: 18px; opacity: .75; }
+@keyframes fall { to { translate: 30px 115vh; } }
+@keyframes breathe { 50% { transform: scale(1.18); opacity: .25; } }
+@keyframes drift { to { transform: translateX(160vw); } }
+
+/* Layout and header */
+.page { max-width: 1200px; padding: 0 46px; margin: auto; }
+.topbar { height: 100px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.logo { text-decoration: none; font-size: 24px; font-weight: 700; letter-spacing: -1px; }
+.logo-mark { font-size: 30px; margin-right: 9px; }
+.dot { color: var(--accent); }
+.top-right, .eyebrow, .overline, .mood-label, .section-label, .mini-card > span, footer, .stats span { font-size: 11px; letter-spacing: 2px; font-weight: 700; } /* Small uppercase labels */
+.top-right { display: flex; align-items: center; gap: 10px; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: #b6f7c1; box-shadow: 0 0 12px #b6f7c1; }
+
+/* Hero */
+.hero { text-align: center; padding: 78px 0 45px; }
+.eyebrow { display: flex; align-items: center; justify-content: center; gap: 16px; color: var(--muted); }
+.line { width: 28px; height: 1px; background: var(--muted); }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 500; }
+h1 { font-size: clamp(70px, 10vw, 136px); letter-spacing: -5px; line-height: .98; margin: 25px 0; }
+h1 em, .explain em { color: var(--accent); font-weight: 500; font-style: normal; } /* Accent colour only, no italics */
+.intro { max-width: 420px; margin: 0 auto 35px; color: var(--muted); line-height: 1.8; font-size: 15px; }
+
+/* Buttons */
+.city-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.city, .action { border: 1px solid var(--border); background: rgba(255,255,255,.07); color: var(--text); border-radius: 100px; padding: 13px 19px; transition: background .2s, transform .2s; }
+.city span { margin-left: 13px; opacity: .65; }
+.city:hover, .action:hover { transform: translateY(-2px); background: rgba(255,255,255,.2); }
+.city.active { background: var(--text); color: var(--bg); border-color: transparent; }
+
+/* Weather panel */
+.weather-panel { max-width: 880px; margin: 32px auto 105px; background: var(--panel); border: 1px solid var(--border); border-radius: 26px; backdrop-filter: blur(24px); box-shadow: 0 28px 90px rgba(0,0,0,.1); padding: 38px 43px; } /* Frosted glass card */
+.panel-top, .panel-bottom, .weather-main { display: flex; justify-content: space-between; align-items: center; }
+.overline, .mood-label { color: var(--muted); }
+.panel-top h2 { font-size: 42px; margin: 8px 0 2px; }
+.local-time { color: var(--muted); font-size: 13px; }
+.status { font-size: 10px; letter-spacing: 1px; border: 1px solid var(--border); padding: 10px 13px; border-radius: 50px; }
+.weather-main { padding: 35px 0; border-bottom: 1px solid var(--border); }
+.temperature { font-size: clamp(80px, 12vw, 132px); font-weight: 500; letter-spacing: -8px; line-height: 1; }
+.temperature #unitSymbol { font-size: 35px; vertical-align: top; letter-spacing: 0; margin-left: 5px; }
+.condition { text-align: center; }
+.weather-icon { font-size: 80px; line-height: 1.1; animation: breathe 6s ease-in-out infinite; }
+.condition p { margin: 10px 0 0; color: var(--muted); }
+.mood-section { padding: 36px 0; }
+.mood-section h3 { font-size: clamp(30px, 4vw, 45px); margin: 13px 0; }
+.mood-section p { color: var(--muted); line-height: 1.7; margin: 0; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 26px 0; }
+.stats > div { display: flex; flex-direction: column; gap: 12px; }
+.stats strong { font-size: 22px; font-weight: 500; }
+.panel-bottom { gap: 15px; padding-top: 26px; }
+.panel-bottom > span { font-size: 11px; color: var(--muted); }
+.actions { display: flex; gap: 8px; }
+.action { font-size: 12px; padding: 11px 15px; }
+
+/* Explainer sections and footer */
+.explain { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; border-top: 1px solid var(--border); padding: 45px 0 50px; }
+.explain h2 { font-size: clamp(35px, 5vw, 60px); line-height: 1.1; }
+.explain p { max-width: 480px; line-height: 1.8; color: var(--muted); }
+.data-story { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 90px; }
+.mini-card { padding: 27px; border: 1px solid var(--border); border-radius: 18px; background: rgba(255,255,255,.05); }
+.mini-card h3 { font-size: 26px; margin: 28px 0 12px; }
+.mini-card p { font-size: 13px; line-height: 1.8; color: var(--muted); margin: 0; }
+footer { border-top: 1px solid var(--border); padding: 30px 0 45px; display: flex; justify-content: space-between; gap: 15px; color: var(--muted); line-height: 1.7; }
+footer a { text-underline-offset: 4px; }
+
+/* Phones and small screens */
+@media (max-width: 700px) {
+  .page { padding: 0 20px; }
+  .topbar { height: 75px; }
+  .logo { font-size: 20px; }
+  .top-right { font-size: 8px; letter-spacing: 1px; }
+  .hero { padding: 65px 0 28px; }
+  h1 { letter-spacing: -3px; }
+  .weather-panel { padding: 25px 22px; margin-bottom: 75px; }
+  .panel-top h2 { font-size: 34px; }
+  .status { font-size: 8px; padding: 8px; }
+  .weather-main { padding: 30px 0; }
+  .temperature { letter-spacing: -5px; }
+  .weather-icon { font-size: 55px; }
+  .condition p { font-size: 12px; }
+  .stats { grid-template-columns: repeat(2, 1fr); row-gap: 26px; }
+  .panel-bottom { align-items: flex-start; flex-direction: column; }
+  .explain { grid-template-columns: 1fr; gap: 10px; }
+  .data-story { grid-template-columns: 1fr; }
+  footer { flex-direction: column; font-size: 9px; }
+}
+
+/* Turns off animation for users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *:before, *:after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

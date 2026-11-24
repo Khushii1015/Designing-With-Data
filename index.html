@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Scales the page on phones -->
+  <meta name="theme-color" content="#17253e"> <!-- Browser bar colour on mobile -->
+  <title>Atmosphere — Weather, but make it a mood</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-mood="cloudy"> <!-- data-mood switches the colour palette in style.css -->
+  <div class="ambient" aria-hidden="true"> <!-- Decorative animated background -->
+    <div class="orb"></div>
+    <div class="cloud cloud-one"></div>
+    <div class="cloud cloud-two"></div>
+    <div id="particles"></div> <!-- Rain and snow are added here by script.js -->
+  </div>
+
+  <div class="page">
+    <header class="topbar">
+      <a href="#home" class="logo"><span class="logo-mark">✳</span> atmosphere<span class="dot">.</span></a>
+      <span class="top-right"><span class="live-dot"></span> THE WORLD, FELT DIFFERENTLY</span>
+    </header>
+
+    <main id="home">
+      <section class="hero"> <!-- Intro and city picker -->
+        <div class="eyebrow"><span class="line"></span> A LIVE WEATHER EXPERIENCE <span class="line"></span></div>
+        <h1>Every city<br>has a <em>mood.</em></h1>
+        <p class="intro">A little window into how the world feels right now. Pick a place and watch the atmosphere change.</p>
+        <div class="city-controls" role="group" aria-label="Choose a city"> <!-- data-city matches a key in script.js -->
+          <button class="city active" data-city="toronto" aria-pressed="true">Toronto <span>↗</span></button>
+          <button class="city" data-city="delhi" aria-pressed="false">Delhi <span>↗</span></button>
+          <button class="city" data-city="london" aria-pressed="false">London <span>↗</span></button>
+          <button class="city" data-city="tokyo" aria-pressed="false">Tokyo <span>↗</span></button>
+          <button class="city" data-city="sydney" aria-pressed="false">Sydney <span>↗</span></button>
+        </div>
+      </section>
+
+      <section class="weather-panel" aria-live="polite"> <!-- Live weather card, announced to screen readers when it changes -->
+        <div class="panel-top">
+          <div>
+            <div class="overline">CURRENTLY IN</div>
+            <h2 id="cityName">Toronto</h2>
+            <div id="localTime" class="local-time">Loading local time…</div>
+          </div>
+          <span id="status" class="status">● CONNECTING</span>
+        </div>
+
+        <div class="weather-main">
+          <div class="temperature"><span id="temperature">--</span><span id="unitSymbol">°C</span></div>
+          <div class="condition">
+            <div id="weatherIcon" class="weather-icon" aria-hidden="true">☁</div>
+            <p id="conditionText">Finding the sky…</p>
+          </div>
+        </div>
+
+        <div class="mood-section"> <!-- Weather translated into words -->
+          <span class="mood-label">TODAY'S ATMOSPHERE</span>
+          <h3 id="moodTitle">A moment between seasons.</h3>
+          <p id="moodDescription">Waiting for the weather to tell its story.</p>
+        </div>
+
+        <div class="stats">
+          <div><span>FEELS LIKE</span><strong id="feelsLike">—</strong></div>
+          <div><span>HUMIDITY</span><strong id="humidity">—</strong></div>
+          <div><span>WIND</span><strong id="wind">—</strong></div>
+          <div><span>CLOUD COVER</span><strong id="cloudCover">—</strong></div>
+        </div>
+
+        <div class="panel-bottom">
+          <span id="updated">Live weather data from Open-Meteo</span>
+          <div class="actions">
+            <button id="unitToggle" class="action" aria-label="Switch temperature units">°C / °F</button>
+            <button id="refresh" class="action">↻ Refresh</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="explain">
+        <div class="section-label">01 / THE IDEA</div>
+        <div>
+          <h2>Not just a forecast.<br><em>A feeling.</em></h2>
+          <p>Temperature, clouds, rain and daylight shape the colours, motion and words you see. No two cities need to feel the same.</p>
+        </div>
+      </section>
+
+      <section class="data-story"> <!-- Three cards explaining the design -->
+        <div class="mini-card"><span>01 / COLOUR</span><h3>The sky sets the palette.</h3><p>Sunny weather brings warmth. Rain cools the scene. Night deepens the colours.</p></div>
+        <div class="mini-card"><span>02 / MOTION</span><h3>Weather moves with you.</h3><p>Rain, snow and drifting clouds respond to live weather codes.</p></div>
+        <div class="mini-card"><span>03 / LANGUAGE</span><h3>Data becomes a story.</h3><p>A changing mood message translates conditions into a feeling.</p></div>
+      </section>
+    </main>
+
+    <footer>
+      <span>ATMOSPHERE © 2026 · MADE WITH CURIOSITY</span>
+      <span>Weather data: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · Updates every 10 minutes</span>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
