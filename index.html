@@ -2,99 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Scales the page on phones -->
-  <meta name="theme-color" content="#17253e"> <!-- Browser bar colour on mobile -->
-  <title>Atmosphere — Weather, but make it a mood</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Can I hang my laundry today?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Gloock&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-mood="cloudy"> <!-- data-mood switches the colour palette in style.css -->
-  <div class="ambient" aria-hidden="true"> <!-- Decorative animated background -->
-    <div class="orb"></div>
-    <div class="cloud cloud-one"></div>
-    <div class="cloud cloud-two"></div>
-    <div id="particles"></div> <!-- Rain and snow are added here by script.js -->
-  </div>
+<body class="calm">
+  <div id="page">
+    <header>
+      <div id="titleBox">
+        <h1>Can I hang my <span class="wavy">laundry</span> today?</h1>
+        <p id="subtitle">A live clothesline for five cities. Data from Open-Meteo.</p>
+      </div>
 
-  <div class="page">
-    <header class="topbar">
-      <a href="#home" class="logo"><span class="logo-mark">✳</span> atmosphere<span class="dot">.</span></a>
-      <span class="top-right"><span class="live-dot"></span> THE WORLD, FELT DIFFERENTLY</span>
+      <div id="controls">
+        <div class="buttonGrid" id="cityButtons">
+          <button id="btn-mississauga" class="active">Mississauga</button>
+          <button id="btn-toronto">Toronto</button>
+          <button id="btn-vancouver">Vancouver</button>
+          <button id="btn-mumbai">Mumbai</button>
+          <button id="btn-london">London</button>
+        </div>
+        <div class="buttonGrid" id="otherButtons">
+          <button id="unitBtn">Show °F</button>
+          <button id="soundBtn">Play wind ♪</button>
+          <button id="restoreBtn">Hang everything back</button>
+        </div>
+      </div>
     </header>
 
-    <main id="home">
-      <section class="hero"> <!-- Intro and city picker -->
-        <div class="eyebrow"><span class="line"></span> A LIVE WEATHER EXPERIENCE <span class="line"></span></div>
-        <h1>Every city<br>has a <em>mood.</em></h1>
-        <p class="intro">A little window into how the world feels right now. Pick a place and watch the atmosphere change.</p>
-        <div class="city-controls" role="group" aria-label="Choose a city"> <!-- data-city matches a key in script.js -->
-          <button class="city active" data-city="toronto" aria-pressed="true">Toronto <span>↗</span></button>
-          <button class="city" data-city="delhi" aria-pressed="false">Delhi <span>↗</span></button>
-          <button class="city" data-city="london" aria-pressed="false">London <span>↗</span></button>
-          <button class="city" data-city="tokyo" aria-pressed="false">Tokyo <span>↗</span></button>
-          <button class="city" data-city="sydney" aria-pressed="false">Sydney <span>↗</span></button>
+    <div id="scene">
+      <div id="sky"></div>
+      <div id="stars"></div>
+      <div id="sun"></div>
+      <div id="moon"></div>
+      <div id="cloud1" class="cloud"></div>
+      <div id="cloud2" class="cloud"></div>
+      <div id="rain"></div>
+
+      <div id="hill1"></div>
+      <div id="hill2"></div>
+      <div id="hill3"></div>
+
+      <div class="post" id="postLeft"></div>
+      <div class="post" id="postRight"></div>
+      <div id="line"></div>
+
+      <div id="tag">
+        <div class="tagPeg"></div>
+        <p id="verdict">Checking the sky...</p>
+        <p id="dryTime"></p>
+        <p id="bestTime"></p>
+      </div>
+
+      <div class="clothes" id="clothes">
+        <div class="item shirt" id="item0"><div class="sleeveL"></div><div class="sleeveR"></div></div>
+        <div class="item sock" id="item1"><div class="foot"></div></div>
+        <div class="item pants" id="item2"><div class="legL"></div><div class="legR"></div></div>
+        <div class="item towel" id="item3"></div>
+        <div class="item sock sock2" id="item4"><div class="foot"></div></div>
+      </div>
+    </div>
+
+    <div id="lower">
+      <section id="today">
+        <h2>Today</h2>
+        <div id="stats">
+          <div class="stat"><span class="num" id="temp">--</span><span class="label">Temperature</span></div>
+          <div class="stat"><span class="num" id="humidity">--</span><span class="label">Humidity</span></div>
+          <div class="stat"><span class="num" id="wind">--</span><span class="label">Wind</span></div>
+          <div class="stat"><span class="num" id="cloud">--</span><span class="label">Cloud</span></div>
         </div>
+        <p id="updatedLine">Updated at <span id="updated">--</span></p>
       </section>
 
-      <section class="weather-panel" aria-live="polite"> <!-- Live weather card, announced to screen readers when it changes -->
-        <div class="panel-top">
-          <div>
-            <div class="overline">CURRENTLY IN</div>
-            <h2 id="cityName">Toronto</h2>
-            <div id="localTime" class="local-time">Loading local time…</div>
-          </div>
-          <span id="status" class="status">● CONNECTING</span>
-        </div>
-
-        <div class="weather-main">
-          <div class="temperature"><span id="temperature">--</span><span id="unitSymbol">°C</span></div>
-          <div class="condition">
-            <div id="weatherIcon" class="weather-icon" aria-hidden="true">☁</div>
-            <p id="conditionText">Finding the sky…</p>
-          </div>
-        </div>
-
-        <div class="mood-section"> <!-- Weather translated into words -->
-          <span class="mood-label">TODAY'S ATMOSPHERE</span>
-          <h3 id="moodTitle">A moment between seasons.</h3>
-          <p id="moodDescription">Waiting for the weather to tell its story.</p>
-        </div>
-
-        <div class="stats">
-          <div><span>FEELS LIKE</span><strong id="feelsLike">—</strong></div>
-          <div><span>HUMIDITY</span><strong id="humidity">—</strong></div>
-          <div><span>WIND</span><strong id="wind">—</strong></div>
-          <div><span>CLOUD COVER</span><strong id="cloudCover">—</strong></div>
-        </div>
-
-        <div class="panel-bottom">
-          <span id="updated">Live weather data from Open-Meteo</span>
-          <div class="actions">
-            <button id="unitToggle" class="action" aria-label="Switch temperature units">°C / °F</button>
-            <button id="refresh" class="action">↻ Refresh</button>
-          </div>
-        </div>
+      <section id="chartCard">
+        <h2>Rain chance, next 12 hours</h2>
+        <div id="chart"></div>
       </section>
+    </div>
 
-      <section class="explain">
-        <div class="section-label">01 / THE IDEA</div>
-        <div>
-          <h2>Not just a forecast.<br><em>A feeling.</em></h2>
-          <p>Temperature, clouds, rain and daylight shape the colours, motion and words you see. No two cities need to feel the same.</p>
-        </div>
-      </section>
+    <section id="about">
+      <h2>About this project</h2>
+      <p>This is our group project for CCT360. It asks the weather if it's a good day to hang laundry outside, using live data from <a href="https://open-meteo.com/">Open-Meteo</a>. Clouds, wind, rain, temperature and day or night change the picture, and you can click the clothes to take them off the line.</p>
+    </section>
 
-      <section class="data-story"> <!-- Three cards explaining the design -->
-        <div class="mini-card"><span>01 / COLOUR</span><h3>The sky sets the palette.</h3><p>Sunny weather brings warmth. Rain cools the scene. Night deepens the colours.</p></div>
-        <div class="mini-card"><span>02 / MOTION</span><h3>Weather moves with you.</h3><p>Rain, snow and drifting clouds respond to live weather codes.</p></div>
-        <div class="mini-card"><span>03 / LANGUAGE</span><h3>Data becomes a story.</h3><p>A changing mood message translates conditions into a feeling.</p></div>
-      </section>
-    </main>
-
-    <footer>
-      <span>ATMOSPHERE © 2026 · MADE WITH CURIOSITY</span>
-      <span>Weather data: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · Updates every 10 minutes</span>
-    </footer>
+    <footer>Made by Varnan Goenka, Yuvika Vohra and Khushboo Gill · CCT360 · Fall 2026</footer>
   </div>
+
+  <audio id="windSound" src="wind.mp3" loop></audio>
+
   <script src="script.js"></script>
 </body>
 </html>
